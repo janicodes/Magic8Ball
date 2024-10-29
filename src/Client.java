@@ -48,15 +48,9 @@ public class Client
     {
         Scanner keyboard = new Scanner(System.in);
         try (
-                // Create client socket on local port.
                 Socket socket = new Socket(hostname, port);
-                // Build buffered reader on client socket.
-                BufferedReader inReader =
-                        new BufferedReader(
-                                new InputStreamReader(socket.getInputStream()));
-                // Build PrintWriter on client socket.
-                PrintWriter outWriter =
-                        new PrintWriter(socket.getOutputStream(), true)
+                BufferedReader inReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                PrintWriter outWriter = new PrintWriter(socket.getOutputStream(), true)
         )
         {
             String userInput;

@@ -14,9 +14,9 @@ public class Server
 {
     // Strings sent to client.
     private static final String GREETING =
-            "Welcome to the echo server. Press just ENTER to end session.";
+            "The Magic 8 Ball says: Please enter a yes/no question.";
     private static final String GOOD_BYE =
-            "Ending echo server session.";
+            "The Magic 8 Ball says: Good bye ... Live long, and prosper.";
 
     // Instance variables.
     private final int port;
@@ -47,30 +47,21 @@ public class Server
     public void start() throws IOException
     {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("Server starting on port " + port + "."
-                    + " Ctrl+C to exit.");
+            System.out.println("Server starting on port " + port + "." + " Ctrl+C to exit.");
             try (
-                    // Wait for connection.
                     Socket clientSocket = serverSocket.accept();
-                    // Build buffered reader on client socket.
-                    InputStream inStream = clientSocket.getInputStream();
-                    InputStreamReader inStreamReader =
-                            new InputStreamReader(inStream);
-                    BufferedReader fromClient =
-                            new BufferedReader(inStreamReader);
-                    // Build PrintWriter on client socket.
-                    OutputStream outStream = clientSocket.getOutputStream();
-                    PrintWriter toClient =
-                            new PrintWriter(outStream, true)
+                    BufferedReader fromClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    PrintWriter toClient = new PrintWriter(clientSocket.getOutputStream(), true)
             )
             {
                 // Connection made. Greet client.
                 toClient.println(GREETING);
                 // Converse with client.
                 String inString = fromClient.readLine();
+                Magic8Ball eightBall = new Magic8Ball();
                 while (inString != null && !inString.isEmpty()) {
-                    System.out.println(inString);
-                    toClient.println(inString);
+                    System.out.println(eightBall.getAnswer());
+                    toClient.println(eightBall.getAnswer());
                     inString = fromClient.readLine();
                 }
                 toClient.println(GOOD_BYE);
